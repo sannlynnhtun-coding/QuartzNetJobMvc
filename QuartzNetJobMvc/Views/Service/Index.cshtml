@@ -1,0 +1,11 @@
+﻿<!-- Views/Service/Index.cshtml -->
+@model ServiceSetting
+
+<h1>Email Service Status</h1>
+<p>The email service is currently: @(Model.IsEnabled ? "Enabled" : "Disabled")</p>
+
+<form asp-action="ToggleEmailService" method="post">
+    <button type="submit">
+        @(Model.IsEnabled ? "Disable" : "Enable") Email Service
+    </button>
+</form>

@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QuartzNetJobMvc.Extensions;
+using QuartzNetJobMvc.Extensions.Quartz;
 
 namespace QuartzNetJobMvc.Controllers
 {
     // Controllers/ServiceController.cs
     public class ServiceController : Controller
     {
-        private readonly YourDbContext _dbContext;
+        private readonly AppDbContext _dbContext;
 
-        public ServiceController(YourDbContext dbContext)
+        public ServiceController(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }

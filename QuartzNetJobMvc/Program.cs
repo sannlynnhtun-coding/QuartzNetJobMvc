@@ -1,13 +1,17 @@
 using Microsoft.EntityFrameworkCore;
+using QuartzNetJobMvc.Extensions;
+using QuartzNetJobMvc.Extensions.Email;
+using QuartzNetJobMvc.Extensions.Logging;
+using QuartzNetJobMvc.Extensions.Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure the services using extension methods
 builder.ConfigureSerilog();
-builder.Services.ConfigureFluentEmail();
+builder.ConfigureFluentEmail();
 builder.Services.ConfigureQuartz();
 
-builder.Services.AddDbContext<YourDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("InMemoryDb"));
 
 var app = builder.Build();
@@ -22,7 +26,7 @@ if (!app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<YourDbContext>();
+    var context = services.GetRequiredService<AppDbContext>();
     DbInitializer.Initialize(context);
 }
 

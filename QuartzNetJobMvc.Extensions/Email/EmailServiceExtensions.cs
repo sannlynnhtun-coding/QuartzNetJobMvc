@@ -1,21 +1,20 @@
 ﻿// Extensions/EmailServiceExtensions.cs
-using FluentEmail.Smtp;
-using FluentEmail.Core;
-using System.Net.Mail;
+
 using System.Net;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using System.Net.Mail;
+
+namespace QuartzNetJobMvc.Extensions.Email;
 
 public static class EmailServiceExtensions
 {
-    public static void ConfigureFluentEmail(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureFluentEmail(this WebApplicationBuilder builder)
     {
         // Bind EmailSettings from appsettings.json
         var emailSettings = new EmailSettings();
-        configuration.GetSection("EmailSettings").Bind(emailSettings);
+        builder.Configuration.GetSection("EmailSettings").Bind(emailSettings);
 
         // Set up FluentEmail with SMTP sender using bound configuration values
-        services
+        builder.Services
             .AddFluentEmail(emailSettings.FromEmail)
             .AddSmtpSender(new SmtpClient(emailSettings.SmtpHost)
             {
@@ -24,13 +23,4 @@ public static class EmailServiceExtensions
                 EnableSsl = true
             });
     }
-}
-
-public class EmailSettings
-{
-    public string FromEmail { get; set; }
-    public string SmtpHost { get; set; }
-    public int SmtpPort { get; set; }
-    public string Username { get; set; }
-    public string Password { get; set; }
 }

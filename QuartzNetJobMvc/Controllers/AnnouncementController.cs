@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QuartzNetJobMvc.Extensions;
+using QuartzNetJobMvc.Extensions.Quartz;
 
 namespace QuartzNetJobMvc.Controllers
 {
     // Controllers/AnnouncementController.cs
     public class AnnouncementController : Controller
     {
-        private readonly YourDbContext _dbContext;
+        private readonly AppDbContext _dbContext;
 
-        public AnnouncementController(YourDbContext dbContext)
+        public AnnouncementController(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }

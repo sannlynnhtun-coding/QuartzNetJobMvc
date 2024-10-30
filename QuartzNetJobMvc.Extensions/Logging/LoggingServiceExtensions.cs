@@ -1,9 +1,4 @@
-﻿// Extensions/LoggingServiceExtensions.cs
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Serilog;
-using Serilog.Sinks.MSSqlServer;
-using System.Data;
+﻿namespace QuartzNetJobMvc.Extensions.Logging;
 
 public static class LoggingServiceExtensions
 {
@@ -33,7 +28,7 @@ public static class LoggingServiceExtensions
                 connectionString: builder.Configuration.GetConnectionString("DbConnection"),
                 sinkOptions: sinkOptions
                 //columnOptions: columnOptions
-                )
+            )
             .CreateLogger();
 
         builder.Host.UseSerilog();

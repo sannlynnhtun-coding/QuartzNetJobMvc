@@ -2,10 +2,20 @@
 @model ServiceSetting
 
 <h1>Email Service Status</h1>
-<p>The email service is currently: @(Model.IsEnabled ? "Enabled" : "Disabled")</p>
+<p>
+    The email service is currently:
+    @if (Model.IsEnabled)
+    {
+        <span class="badge text-bg-success">Enabled</span>
+    }
+    else
+    {
+        <span class="badge text-bg-danger">Disabled</span>
+    }
+</p>
 
 <form asp-action="ToggleEmailService" method="post">
-    <button type="submit">
+    <button type="submit" class="btn @(Model.IsEnabled ? "btn-danger" : "btn-success")">
         @(Model.IsEnabled ? "Disable" : "Enable") Email Service
     </button>
 </form>

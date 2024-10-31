@@ -5,12 +5,12 @@
 <h1>Create Announcement</h1>
 
 <form asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="Title"></label>
+    <div class="form-group mb-3">
+        <label asp-for="Title" class="mb-2"></label>
         <input asp-for="Title" class="form-control" />
     </div>
-    <div class="form-group">
-        <label asp-for="Message"></label>
+    <div class="form-group mb-3">
+        <label asp-for="Message" class="mb-2"></label>
         <textarea asp-for="Message" class="form-control"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Send Announcement</button>

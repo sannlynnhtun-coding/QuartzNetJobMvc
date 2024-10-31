@@ -2,20 +2,20 @@
 
 A **.NET 9 MVC** application that uses **Quartz.NET** for scheduling email jobs, **Serilog** for logging, and **FluentEmail** for email sending. This app allows administrators to create announcements and automatically send email notifications on a schedule if the email service is enabled.
 
-
 ### 📋 Features
 
 - 📝 **Create Announcements**: Allows users to create announcements that can be sent as email notifications.
 - ✉️ **Toggle Email Service**: Enables or disables the email sending functionality from the `ServiceSettings` table.
 - ⏰ **Automated Email Scheduling**: Sends unsent announcements as emails every 5 minutes using Quartz.NET.
+- 📅 **Manage Scheduled Jobs**: Create, update, and list job schedules for announcements.
 - 📊 **Logging with Serilog**: Logs events, including email sends and errors, to a file and SQL Server.
-
 
 ### 📂 Project Structure
 
 - **Controllers**
   - `AnnouncementController`: Manages announcements, allowing creation and displaying feedback on success or failure.
   - `ServiceController`: Provides an interface to enable/disable the email service.
+  - `ScheduledJobController`: Manages job schedules, allowing users to create, update, and view scheduled jobs.
 
 - **Extensions**
   - **Email** (`EmailServiceExtensions.cs`): Configures **FluentEmail** with SMTP settings to send emails.
@@ -23,7 +23,6 @@ A **.NET 9 MVC** application that uses **Quartz.NET** for scheduling email jobs,
   - **Quartz** (`QuartzServiceExtensions.cs`, `EmailJob.cs`): Configures Quartz to schedule and run the `EmailJob`.
 
 - 🔄 **EmailJob**: A Quartz job that checks for unsent announcements and sends them via email if the email service is enabled.
-
 
 ### 🛠️ Setup
 
@@ -33,6 +32,11 @@ A **.NET 9 MVC** application that uses **Quartz.NET** for scheduling email jobs,
      ```bash
      dotnet ef dbcontext scaffold "Server=.;Database=QuartzNetJobMvc;User Id=sa;Password=sasa@123;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -o AppDbContextModels -c AppDbContext -f
      ```
+   - Make sure the `ScheduleSettings` table is created to manage job schedules. Use the following EF command if necessary:
+     ```bash
+     dotnet ef migrations add InitialCreateScheduleSettings
+     dotnet ef database update
+     ```
 
 2. **Email Settings**:
    - Configure SMTP email settings in `appsettings.json` under the `EmailSettings` section.
@@ -40,7 +44,6 @@ A **.NET 9 MVC** application that uses **Quartz.NET** for scheduling email jobs,
 3. **Run the Application**:
    - Execute `dotnet run` to start the app.
    - Access the app at `https://localhost:7140` (or configured URL).
-
 
 ### 🚀 Usage
 
@@ -52,9 +55,13 @@ A **.NET 9 MVC** application that uses **Quartz.NET** for scheduling email jobs,
    - Use the Service page to toggle email notifications.
    - If enabled, unsent announcements will be emailed automatically.
 
-3. **Quartz Job**:
-   - The job is set to check for new announcements and send them every 5 minutes.
+3. **Manage Scheduled Jobs**:
+   - Navigate to the Scheduled Jobs page to list all existing scheduled jobs, showing their service names and cron expressions.
+   - To create a new job schedule, click on the "Create New Job" button, enter the required details, and submit.
+   - To update an existing job schedule, find the job in the list, edit its cron expression, and submit the changes.
 
+4. **Quartz Job**:
+   - The job is set to check for new announcements and send them every 5 minutes.
 
 ### 📜 Logging
 
@@ -62,11 +69,9 @@ All log entries are saved to:
    - **SQL Server**: Logs to the `Logs` table (created automatically).
    - **File Logs**: Stores logs daily in `logs/log-.txt` in the root folder.
 
-
 ### 🛠 Configuration
 
 In `Program.cs`, configuration extensions are added for:
-- **Quartz** (`ConfigureQuartz`): Registers and configures Quartz scheduler with `EmailJob`.
+- **Quartz** (`ConfigureQuartz`): Registers and configures Quartz scheduler with `EmailJob` and other scheduled jobs.
 - **FluentEmail** (`ConfigureFluentEmail`): Configures FluentEmail with SMTP settings.
 - **Serilog** (`ConfigureSerilog`): Configures logging to file and SQL Server.
-

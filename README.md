@@ -1,6 +1,6 @@
 ﻿# 🚀 Quartz.Net Job MVC
 
-A **.NET 6 MVC** application that uses **Quartz.NET** for scheduling email jobs, **Serilog** for logging, and **FluentEmail** for email sending. This app allows administrators to create announcements and automatically send email notifications on a schedule if the email service is enabled.
+A **.NET 9 MVC** application that uses **Quartz.NET** for scheduling email jobs, **Serilog** for logging, and **FluentEmail** for email sending. This app allows administrators to create announcements and automatically send email notifications on a schedule if the email service is enabled.
 
 
 ### 📋 Features

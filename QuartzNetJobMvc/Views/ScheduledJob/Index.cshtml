@@ -1,0 +1,40 @@
+﻿ @model IEnumerable<ScheduleSetting>
+
+@{
+    ViewData["Title"] = "Scheduled Jobs";
+}
+
+<h2>Scheduled Jobs</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Service Name</th>
+            <th>Cron Expression</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ServiceName</td>
+                    <td>@item.CronExpression</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-serviceName="@item.ServiceName" class="btn btn-warning">Edit</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">No scheduled jobs found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Create New Job</a>

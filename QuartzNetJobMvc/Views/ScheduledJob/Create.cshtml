@@ -1,0 +1,20 @@
+﻿@model ScheduleSetting
+
+@{
+    ViewData["Title"] = "Create New Job Schedule";
+}
+
+<h2>Create New Job Schedule</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group mb-3">
+        <label for="ServiceName" class="mb-2">Service Name:</label>
+        <input type="text" class="form-control" id="ServiceName" name="ServiceName" required />
+    </div>
+    <div class="form-group mb-3">
+        <label for="CronExpression" class="mb-2">Cron Expression:</label>
+        <input type="text" class="form-control" id="CronExpression" name="CronExpression" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Create Schedule</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

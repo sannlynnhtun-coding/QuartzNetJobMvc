@@ -6,21 +6,32 @@ public static class DbInitializer
     {
         try
         {
-            if (context.ServiceSettings.Any())
+            // Seed initial service settings if not already present
+            if (!context.ServiceSettings.Any())
             {
-                Log.Information("DB has already been seeded.");
-                return; // DB has been seeded
+                context.ServiceSettings.Add(new ServiceSetting
+                {
+                    ServiceName = "EmailService",
+                    IsEnabled = true
+                });
+                Log.Information("Email service settings seeded.");
             }
 
-            // Seed initial email service setting
-            context.ServiceSettings.Add(new ServiceSetting
+            // Check if EmailJob exists in ScheduleSettings
+            if (!context.ScheduleSettings.Any(s => s.JobType == "EmailJob"))
             {
-                ServiceName = "EmailService",
-                IsEnabled = true
-            });
+                context.ScheduleSettings.Add(new ScheduleSetting
+                {
+                    ServiceName = "EmailService",
+                    JobType = "EmailJob",
+                    CronExpression = "0 0 1 * * ? " // Adjust the cron expression as needed
+                });
+                Log.Information("EmailJob settings seeded in ScheduleSettings.");
+            }
 
+            // Save changes to the database
             context.SaveChanges();
-            Log.Information("Database initialized and email service settings seeded.");
+            Log.Information("Database initialized.");
         }
         catch (Exception ex)
         {

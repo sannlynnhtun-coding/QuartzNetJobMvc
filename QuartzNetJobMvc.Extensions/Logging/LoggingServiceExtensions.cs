@@ -7,7 +7,7 @@ public static class LoggingServiceExtensions
         // Configure MSSqlServerSinkOptions
         var sinkOptions = new MSSqlServerSinkOptions
         {
-            TableName = "Logs",
+            TableName = "QuartzLogs",
             AutoCreateSqlTable = true
         };
 

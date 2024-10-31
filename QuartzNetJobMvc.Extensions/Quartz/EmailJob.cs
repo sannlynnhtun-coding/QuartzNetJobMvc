@@ -20,27 +20,26 @@ public class EmailJob : IJob
                 .Select(s => s.IsEnabled)
                 .FirstOrDefaultAsync();
 
-            if (isEmailServiceEnabled)
-            {
-                var announcements = await _dbContext.Announcements
-                    .Where(a => !a.IsSent)
-                    .ToListAsync();
-
-                foreach (var announcement in announcements)
-                {
-                    await SendAnnouncementEmailAsync(announcement);
-
-                    // Mark announcement as sent
-                    announcement.IsSent = true;
-                    _dbContext.Update(announcement);
-                }
-
-                await _dbContext.SaveChangesAsync();
-            }
-            else
+            if (!isEmailServiceEnabled)
             {
                 Log.Warning("Email service is turned off.");
+                return;
             }
+            var announcements = await _dbContext.Announcements
+                .AsNoTracking()
+                .Where(a => !a.IsSent)
+                .ToListAsync();
+
+            foreach (var announcement in announcements)
+            {
+                await SendAnnouncementEmailAsync(announcement);
+
+                // Mark announcement as sent
+                announcement.IsSent = true;
+                _dbContext.Update(announcement);
+            }
+
+            await _dbContext.SaveChangesAsync();
         }
         catch (Exception ex)
         {

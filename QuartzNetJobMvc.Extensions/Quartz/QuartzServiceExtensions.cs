@@ -2,9 +2,9 @@
 
 public static class QuartzServiceExtensions
 {
-    public static void ConfigureQuartz(this IServiceCollection services)
+    public static void ConfigureQuartz(this WebApplicationBuilder builder)
     {
-        services.AddQuartz(q =>
+        builder.Services.AddQuartz(q =>
         {
             q.ScheduleJob<EmailJob>(trigger => trigger
                 .WithIdentity("emailJobTrigger")
@@ -14,6 +14,6 @@ public static class QuartzServiceExtensions
                     .RepeatForever()));
         });
 
-        services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+        builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
     }
 }

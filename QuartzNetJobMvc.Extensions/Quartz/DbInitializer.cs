@@ -15,7 +15,6 @@ public static class DbInitializer
             // Seed initial email service setting
             context.ServiceSettings.Add(new ServiceSetting
             {
-                Id = 1,
                 ServiceName = "EmailService",
                 IsEnabled = true
             });

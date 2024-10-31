@@ -11,32 +11,6 @@ public class EmailJob : IJob
         _emailFactory = emailFactory;
     }
 
-    private async Task SendAnnouncementEmailAsync(Announcement announcement)
-    {
-        try
-        {
-            var email = await _emailFactory
-                .Create()
-                .To("recipient@example.com") // Replace with the recipient's email address
-                .Subject(announcement.Title)
-                .Body(announcement.Message, true) // Use 'true' for HTML body
-                .SendAsync();
-
-            if (email.Successful)
-            {
-                Log.Information($"Email sent: {announcement.Title}");
-            }
-            else
-            {
-                Log.Error($"Failed to send email: {string.Join(", ", email.ErrorMessages)}");
-            }
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Error sending email for announcement: {Title}", announcement.Title);
-        }
-    }
-
     public async Task Execute(IJobExecutionContext context)
     {
         try
@@ -71,6 +45,32 @@ public class EmailJob : IJob
         catch (Exception ex)
         {
             Log.Error(ex, "Error executing EmailJob");
+        }
+    }
+
+    private async Task SendAnnouncementEmailAsync(Announcement announcement)
+    {
+        try
+        {
+            var email = await _emailFactory
+                .Create()
+                .To("recipient@example.com") // Replace with the recipient's email address
+                .Subject(announcement.Title)
+                .Body(announcement.Message, true) // Use 'true' for HTML body
+                .SendAsync();
+
+            if (email.Successful)
+            {
+                Log.Information($"Email sent: {announcement.Title}");
+            }
+            else
+            {
+                Log.Error($"Failed to send email: {string.Join(", ", email.ErrorMessages)}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error sending email for announcement: {Title}", announcement.Title);
         }
     }
 }

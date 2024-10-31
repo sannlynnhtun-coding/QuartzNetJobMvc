@@ -20,10 +20,12 @@ public static class LoggingServiceExtensions
         //    }
         //};
 
+        string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs/log-.txt");
+
         // Configure Serilog
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
-            .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.File(folderPath, rollingInterval: RollingInterval.Day)
             .WriteTo.MSSqlServer(
                 connectionString: builder.Configuration.GetConnectionString("DbConnection"),
                 sinkOptions: sinkOptions
